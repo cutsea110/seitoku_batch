@@ -9,11 +9,11 @@ import Data.Time
 import Database.PostgreSQL.Simple
 
 owl_conn :: BS.ByteString
-owl_conn = "host=localhost port=5432 user=cutsea110 password=cutsea110 dbname=owl_devel"
+owl_conn = "host=localhost port=5432 user=soubun password=sougoubunnka dbname=owl"
 bisocie_conn :: BS.ByteString
-bisocie_conn = "host=localhost port=5432 user=cutsea110 password=cutsea110 dbname=bisocie_devel"
+bisocie_conn = "host=localhost port=5432 user=soubun password=sougoubunnka dbname=bisocie"
 kestrel_conn :: BS.ByteString
-kestrel_conn = "host=localhost port=5432 user=cutsea110 password=cutsea110 dbname=kestrel_devel"
+kestrel_conn = "host=localhost port=5432 user=soubun password=sougoubunnka dbname=kestrel"
 
 collect :: NominalDiffTime -> IO [(Text, Text, Text, Maybe Text, Maybe Text)]
 collect n = do
