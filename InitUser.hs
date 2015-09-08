@@ -24,7 +24,7 @@ update us = do
   where
     oupdate :: Connection -> (Text, Text, Text, Text, Text) -> IO ()
     oupdate c (i, p, f, g, e) = do
-      execute c "insert into \"user\"(username,password,salt,familyname,givenname,email,role) values (?,?,'',?,?,?,'None')" (i, p, f, g, e)
+      execute c "insert into \"user\"(name,password,salt,familyname,givenname,email,role) values (?,?,'',?,?,?,'None')" (i, p, f, g, e)
       return ()
 
 main :: IO ()

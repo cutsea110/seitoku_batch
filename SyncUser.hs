@@ -17,7 +17,7 @@ collect :: NominalDiffTime -> IO [(Text, Text, Text, Maybe Text, Maybe Text)]
 collect n = do
   now <- fmap (addUTCTime (-60 * n)) getCurrentTime
   conn <- connectPostgreSQL owl_conn
-  query conn "select \"username\",\"familyname\",\"givenname\",\"email\",\"verstatus\" from \"user\" where updated > ? " (Only now)
+  query conn "select \"name\",\"familyname\",\"givenname\",\"email\",\"verstatus\" from \"user\" where updated > ? " (Only now)
     
 update :: [(Text, Text, Text, Maybe Text, Maybe Text)] -> IO ()
 update us = do
