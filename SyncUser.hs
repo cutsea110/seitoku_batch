@@ -27,7 +27,7 @@ update us = do
   mcon <- connectPostgreSQL mock_conn
   forM_ us $ \(id', fn, gn, em, vs) -> do
     bupdate bcon (fn, gn, em, vs, id')
-    mupdate mcon (fn, gn, id')
+    mupdate mcon (fn, gn, em, id')
   where
     bupdate :: Connection -> (Text, Text, Maybe Text, Maybe Text, Text) -> IO ()
     bupdate c (f, g, e, v, i) = do
@@ -37,9 +37,10 @@ update us = do
         _ -> do
           execute c "update \"User\" set \"familyName\"=?,\"givenName\"=? where ident=?" (f, g, i)
       return ()
-    mupdate :: Connection -> (Text, Text, Text) -> IO ()
-    mupdate c (f, g, i) = do
-      execute c "update \"user\" set \"family_name\"=?,\"given_name\"=? where ident=?" (f, g, i)
+    mupdate :: Connection -> (Text, Text, Maybe Text, Text) -> IO ()
+    mupdate c (f, g, e, i) = do
+      let e' = maybe "nobody@example.net" id e
+      execute c "update \"user\" set \"family_name\"=?,\"given_name\"=?,\"email\"=? where ident=?" (f, g, e', i)
       return ()
 
 main :: IO ()
