@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
+import GHC.Int (Int64)
 import Control.Monad
 import qualified Data.ByteString as BS
 import Data.Text (Text)
@@ -40,7 +41,10 @@ update us = do
     mupdate :: Connection -> (Text, Text, Maybe Text, Text) -> IO ()
     mupdate c (f, g, e, i) = do
       let e' = maybe "nobody@example.net" id e
-      execute c "update \"user\" set \"family_name\"=?,\"given_name\"=?,\"email\"=? where ident=?" (f, g, e', i)
+      [Only (cnt :: Int64)] <- query c "select count(*) from \"user\" where ident=?" (Only i)
+      if cnt == 1
+        then execute c "update \"user\" set \"family_name\"=?,\"given_name\"=?,\"email\"=? where ident=?" (f, g, e', i)
+        else execute c "insert into \"user\"(ident,family_name,given_name,email) values (?,?,?,?) " (i, f, g, e')
       return ()
 
 main :: IO ()
